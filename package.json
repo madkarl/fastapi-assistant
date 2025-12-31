@@ -1,0 +1,102 @@
+{
+  "name": "fastapi-assistant",
+  "displayName": "fastapi-assistant",
+  "description": "",
+  "version": "0.1.0",
+  "author": "madkarl",
+  "publisher": "madkarl",
+  "icon": "icon.png",
+  "engines": {
+    "vscode": "^1.100.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/madkarl/fastapi-assistant.git"
+  },
+  "activationEvents": [
+    "onCommand:fastapi-assistant.createProject",
+    "onCommand:fastapi-assistant.createModule",
+    "onCommand:fastapi-assistant.createAPI",
+    "onCommand:fastapi-assistant.createSchema"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "fastapi-assistant.createProject",
+        "title": "Create Project"
+      },
+      {
+        "command": "fastapi-assistant.createModule",
+        "title": "Create Module"
+      },
+      {
+        "command": "fastapi-assistant.createAPI",
+        "title": "Create API"
+      },
+      {
+        "command": "fastapi-assistant.createSchema",
+        "title": "Create Schema"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "submenu": "fastapi-assistant.explorerMenu",
+          "group": "fastapi-assistant"
+        }
+      ],
+      "fastapi-assistant.explorerMenu": [
+        {
+          "command": "fastapi-assistant.createProject",
+          "group": "1_project"
+        },
+        {
+          "command": "fastapi-assistant.createModule",
+          "group": "1_project"
+        },
+        {
+          "command": "fastapi-assistant.createAPI",
+          "group": "2_api"
+        },
+        {
+          "command": "fastapi-assistant.createSchema",
+          "group": "2_api"
+        }
+      ]
+    },
+    "submenus": [
+      {
+        "id": "fastapi-assistant.explorerMenu",
+        "label": "FastAPI Assistant"
+      }
+    ]
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test",
+    "package": "npx vsce package"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "@types/vscode": "^1.100.0",
+    "@typescript-eslint/eslint-plugin": "^8.39.0",
+    "@typescript-eslint/parser": "^8.39.0",
+    "@vscode/test-cli": "^0.0.11",
+    "@vscode/test-electron": "^2.5.2",
+    "eslint": "^9.32.0",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@types/adm-zip": "^0.5.7",
+    "adm-zip": "^0.5.16"
+  }
+}

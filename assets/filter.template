@@ -1,0 +1,6 @@
+class ${schema-name}Filter(Filter):
+    name: Optional[str] = None
+    name__ilike: Optional[str] = None
+
+    class Constants(Filter.Constants):
+        model = ${schema-name}

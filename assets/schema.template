@@ -1,0 +1,18 @@
+
+class ${schema-name}Base(SQLModel):
+    name: str = Field(max_length=255)
+
+
+class ${schema-name}Create(${schema-name}Base):
+    pass
+
+
+class ${schema-name}Read(${schema-name}Base):
+    id: ${id-type}
+
+
+${schema-name}Update = make_partial_model("${schema-name}Update", ${schema-name}Base)
+
+
+class ${schema-name}(${schema-name}Base, table=True):
+    id: ${id-type} = Field(${id-config})

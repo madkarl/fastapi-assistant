@@ -1,0 +1,30 @@
+
+@router.post("/${schema-name}/"${depends})
+async def create_${schema-name}(session: Session, item_in: ${schema-class}Create) -> ${schema-class}Read:
+    return await QueryService[${schema-class}Create](session, ${schema-class}).create(item_in)
+
+
+@router.get("/${schema-name}/{item_id}"${depends})
+async def get_${schema-name}(session: Session, item_id: ${id-type}) -> ${schema-class}Read:
+    return await QueryService[${schema-class}Read](session, ${schema-class}).get(item_id)
+
+
+@router.get("/${schema-name}/"${depends})
+async def list_${schema-name}s(
+    session: Session,
+    page_info: Pagination,
+    filter: ${schema-class}Filter = FilterDepends(${schema-class}Filter)
+) -> PaginationData[${schema-class}Read]:
+    return await QueryService[${schema-class}Read](session, ${schema-class}).list(page_info, filter)
+    
+
+@router.put("/${schema-name}/{item_id}"${depends})
+async def update_${schema-name}(
+    session: Session, item_id: ${id-type}, item_in: ${schema-class}Update
+) -> ${schema-class}Read:
+    return await QueryService[${schema-class}Update](session, ${schema-class}).update(item_id, item_in)
+
+
+@router.delete("/${schema-name}/{item_id}"${depends})
+async def delete_${schema-name}(session: Session, item_id: ${id-type}) -> GeneralResponse:
+    return await QueryService[${schema-class}Read](session, ${schema-class}).delete(item_id)
