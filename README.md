@@ -53,5 +53,7 @@ If you are not satisfied with the current project template, you can modify the p
 
 ## Release Notes
 
+- 0.1.1：Add background task support by [taskiq](https://taskiq-python.github.io/)
+
 - 0.1.0: Initial usable version. Implements project creation, module creation, schema generation, and API generation.
 

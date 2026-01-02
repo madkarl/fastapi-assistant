@@ -129,7 +129,8 @@ async function installDependencies(workspacePath: string) {
         'alembic',
         'fastapi-filter',
         'PyJWT',
-        'pwdlib[argon2]'
+        'pwdlib[argon2]',
+        "taskiq"
     ];
 
     const cmd = `uv add ${dependencies.join(' ')}`;
