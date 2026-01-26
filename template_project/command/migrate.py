@@ -4,6 +4,8 @@ import sys
 import ast
 import subprocess
 
+from core.settings import settings
+
 
 def find_schemas(file_path: Path) -> list:
     with open(file_path, "r", encoding="utf-8") as f:
@@ -66,7 +68,7 @@ def find_schemas(file_path: Path) -> list:
     return result
 
 
-def generate_imports(search_base: Path):
+def generate_imports(search_base: Path) -> list[str]:
     result = []
 
     for item in search_base.iterdir():
@@ -77,6 +79,30 @@ def generate_imports(search_base: Path):
             classes = find_schemas(schema_file)
             for clz in classes:
                 result.append(f"from {item.name}.schema import {clz}")
+
+    return result
+
+
+def generate_imports_from_external_path(external_path: Path) -> list[str]:
+    result = []
+
+    # 遍历目录及子目录中所有py文件
+    for py_file in external_path.rglob("*.py"):
+        # 跳过 __pycache__ 目录
+        if "__pycache__" in py_file.parts:
+            continue
+
+        print(f"find: {py_file}")
+        classes = find_schemas(py_file)
+        if not classes:
+            continue
+
+        # 包含external_path目录名作为模块前缀
+        relative_path = py_file.relative_to(external_path.parent)
+        module_path = str(relative_path.with_suffix("")).replace(os.sep, ".")
+
+        for clz in classes:
+            result.append(f"from {module_path} import {clz}")
 
     return result
 
@@ -131,12 +157,23 @@ def update_alembic_env(import_statements: list[str]) -> bool:
 def execute_alembic_commands(message: str) -> bool:
     """Execute alembic commands."""
     try:
+        env = os.environ.copy()
+
+        if settings.external_schema_path:
+            external_parent = str(Path(settings.external_schema_path).resolve().parent)
+            python_path = env.get("PYTHONPATH", "")
+            env["PYTHONPATH"] = (
+                f"{external_parent}{os.pathsep}{python_path}"
+                if python_path
+                else external_parent
+            )
+
         # Execute alembic revision command
         revision_cmd = f'alembic revision --autogenerate -m "{message}"'
         print(f"Executing: {revision_cmd}")
 
         result = subprocess.run(
-            revision_cmd, shell=True, capture_output=True, text=True
+            revision_cmd, shell=True, capture_output=True, text=True, env=env
         )
         if result.returncode != 0:
             print(f"Error in revision: {result.stderr}")
@@ -148,7 +185,9 @@ def execute_alembic_commands(message: str) -> bool:
         upgrade_cmd = "alembic upgrade head"
         print(f"Executing: {upgrade_cmd}")
 
-        result = subprocess.run(upgrade_cmd, shell=True, capture_output=True, text=True)
+        result = subprocess.run(
+            upgrade_cmd, shell=True, capture_output=True, text=True, env=env
+        )
         if result.returncode != 0:
             print(f"Error in upgrade: {result.stderr}")
             return False
@@ -165,6 +204,11 @@ def migrate_database(message: str):
     # Get all SQLModel(table=True) classes and generate import statements
     search_base = Path(__file__).parent.parent
     imports = generate_imports(search_base)
+
+    if settings.external_schema_path != "":
+        external_base = Path(settings.external_schema_path).resolve()
+        external_imports = generate_imports_from_external_path(external_base)
+        imports.extend(external_imports)
 
     if len(imports):
         print(f"Detect {len(imports)} schemas:")

@@ -27,6 +27,18 @@ export function getRightClickedPath(uri: vscode.Uri | undefined): string {
     return stat.isDirectory() ? uri.fsPath : path.dirname(uri.fsPath);
 }
 
+export function getRightClickedFile(uri: vscode.Uri | undefined): string {
+    // 如果没有uri（从命令面板执行），使用workspace路径
+    if (!uri) {
+        return getWorkspacePath();
+    }
+    const stat = fs.statSync(uri.fsPath);
+    if (stat.isDirectory()) {
+        throw new Error('not support directory!');
+    }
+    return uri.fsPath;
+}
+
 export function getWorkspacePath(): string {
     // 获取 workspace 根目录
     const workspaceFolders = vscode.workspace.workspaceFolders;
@@ -275,4 +287,31 @@ export function getAllSchema(schemaFile: string): Array<string> {
 
 export function convertToUnderScoreCase(input: string): string {
     return input.replace(/([a-z])([A-Z])/g, '$1_$2').toLowerCase();
+}
+
+/**
+ * Check if file contains the specified text
+ * @param filePath file path
+ * @param text text to search
+ * @returns true if file contains the text
+ */
+export function fileContains(filePath: string, text: string): boolean {
+    if (!fs.existsSync(filePath)) {
+        return false;
+    }
+    const content = fs.readFileSync(filePath, 'utf-8');
+    return content.includes(text);
+}
+
+/**
+ * Prepend text to the beginning of a file
+ * @param filePath file path
+ * @param text text to prepend
+ */
+export function prependToFile(filePath: string, text: string): void {
+    if (!fs.existsSync(filePath)) {
+        throw new Error(`file not exist: ${filePath}`);
+    }
+    const content = fs.readFileSync(filePath, 'utf-8');
+    fs.writeFileSync(filePath, text + '\n' + content, 'utf-8');
 }

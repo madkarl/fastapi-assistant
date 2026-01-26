@@ -1,6 +1,10 @@
 # FastAPI Assistant
 FastAPI Assistant is a Visual Studio Code extension that streamlines the quick creation of FastAPI projects and modules, as well as the automatic generation of schemas, filters, and APIs.
 
+
+## What' news?
+- 2026.01.26: Support creating `External Schema Directory` in multi-project environments, allowing multiple projects to share a common schema
+
 ## Features
 
 - Quick FastAPI Project Creation
@@ -10,6 +14,8 @@ FastAPI Assistant is a Visual Studio Code extension that streamlines the quick c
 - Quick FastAPI Module Creation
 - Quick FastAPI Schema and Filter Creation
 - Quick FastAPI API Creation (with basic CRUD functionality)
+- Create External Schema directory for reuse across multiple projects
+- Quickly create External Schema
 - CLI Mode Support (similar to django's manage.py)
 
 
@@ -32,6 +38,19 @@ Add a set of schemas to schema.py and corresponding filters to filter.py within 
 Add basic CRUD operation APIs for the corresponding schema to api.py within the module at the selected location
 ![create api](./img/create_api.gif)
 
+### Create External Schema Directory
+
+In multi-project environments, you can create an external schema directory to share schemas across multiple projects
+
+`!!! If the plugin fails to update the .env file automatically, please manually update the external_schema_path field in the .env file under your FastAPI project. This field supports both relative and absolute paths.`
+
+![create external schema](./img/create_external_schema_dir.gif)
+
+### Add External Schema
+Add Schema group (including Read, Create, Update models) to External Schema Directory
+![add external schema](./img/add_external_schema.gif)
+
+
 ### Command Line
 Execute CLI commands using the syntax: "python [OPTIONS] COMMAND [ARGS]` 
 
@@ -52,6 +71,8 @@ If you are not satisfied with the current project template, you can modify the p
 
 
 ## Release Notes
+
+- 0.1.2: Support creating `External Schema Directory` in multi-project environments, allowing multiple projects to share a common schema
 
 - 0.1.1：Add background task support by [taskiq](https://taskiq-python.github.io/)
 

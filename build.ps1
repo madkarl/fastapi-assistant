@@ -28,6 +28,11 @@ foreach ($pyFile in $pyFiles) {
     Copy-Item -Path $pyFile.FullName -Destination $tempDir
 }
 
+# Copy .env file
+if (Test-Path (Join-Path $templatePath ".env")) {
+    Copy-Item -Path (Join-Path $templatePath ".env") -Destination $tempDir
+}
+
 Compress-Archive -Path (Join-Path $tempDir "*") -DestinationPath "assets\project.zip" -Force
 Remove-Item -Path $tempDir -Recurse -Force
 

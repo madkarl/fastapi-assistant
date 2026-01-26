@@ -5,21 +5,21 @@ import * as tools from './tools';
 
 export async function getParameters(): Promise<Record<string, string>> {
     const schemaName = await vscode.window.showInputBox({
-        prompt: '请输入Schema名称',
-        placeHolder: '例如: User, Product, Order',
+        prompt: 'Enter schema name',
+        placeHolder: 'e.g. User, Product, Order',
         validateInput: (value) => {
             if (!value || value.trim().length === 0) {
-                return 'Schema名称前缀不能为空';
+                return 'Schema name cannot be empty';
             }
             if (!/^[A-Z][a-zA-Z0-9]*$/.test(value)) {
-                return 'Schema名称前缀必须以大写字母开头，只能包含字母和数字';
+                return 'Schema name must start with uppercase letter and contain only letters and numbers';
             }
             return null;
         }
     });
 
     if (!schemaName) {
-        throw new Error('Schema名称前缀不能为空');
+        throw new Error('Schema name cannot be empty');
     }
 
     const idType = await vscode.window.showQuickPick(

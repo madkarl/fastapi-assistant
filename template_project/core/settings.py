@@ -1,9 +1,11 @@
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic_core import MultiHostUrl
 from pydantic import computed_field
 
 
 class Settings(BaseSettings):
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8")
+
     # Basic Info
     app_name: str = "${app-name}"
     app_description: str = "${app-description}"
@@ -58,6 +60,8 @@ class Settings(BaseSettings):
     # GZip
     gzip_minimum_size: int = 2000
     gzip_compress_level: int = 9
+
+    external_schema_path: str = ""
 
 
 settings = Settings()

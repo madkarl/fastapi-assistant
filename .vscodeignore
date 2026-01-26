@@ -2,6 +2,8 @@
 .vscode-test/**
 src/**
 template_project/**
+node_modules/**
+!node_modules/adm-zip/**
 .gitignore
 .yarnrc
 vsc-extension-quickstart.md
@@ -11,3 +13,4 @@ vsc-extension-quickstart.md
 **/*.ts
 **/.vscode-test.*
 build.ps1
+package-lock.json

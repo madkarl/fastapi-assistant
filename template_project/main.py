@@ -10,9 +10,11 @@ from core import (
     setup_router,
     task_broker,
 )
+from core.tools import append_to_environment
 from command import command
 
 setup_logger()
+append_to_environment(settings.external_schema_path)
 
 
 @asynccontextmanager

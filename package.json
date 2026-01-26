@@ -1,8 +1,8 @@
 {
   "name": "fastapi-assistant",
-  "displayName": "fastapi-assistant",
+  "displayName": "FastAPI Assistant",
   "description": "",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "madkarl",
   "publisher": "madkarl",
   "icon": "icon.png",
@@ -16,12 +16,7 @@
     "type": "git",
     "url": "https://github.com/madkarl/fastapi-assistant.git"
   },
-  "activationEvents": [
-    "onCommand:fastapi-assistant.createProject",
-    "onCommand:fastapi-assistant.createModule",
-    "onCommand:fastapi-assistant.createAPI",
-    "onCommand:fastapi-assistant.createSchema"
-  ],
+  "activationEvents": [],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -40,6 +35,14 @@
       {
         "command": "fastapi-assistant.createSchema",
         "title": "Create Schema"
+      },
+      {
+        "command": "fastapi-assistant.createExternalSchemaDir",
+        "title": "Create External Schema Directory"
+      },
+      {
+        "command": "fastapi-assistant.addExternalSchema",
+        "title": "Add External Schema"
       }
     ],
     "menus": {
@@ -65,6 +68,14 @@
         {
           "command": "fastapi-assistant.createSchema",
           "group": "2_api"
+        },
+        {
+          "command": "fastapi-assistant.createExternalSchemaDir",
+          "group": "3_external"
+        },
+        {
+          "command": "fastapi-assistant.addExternalSchema",
+          "group": "3_external"
         }
       ]
     },
@@ -97,6 +108,7 @@
   },
   "dependencies": {
     "@types/adm-zip": "^0.5.7",
-    "adm-zip": "^0.5.16"
+    "adm-zip": "^0.5.16",
+    "vsce": "^2.15.0"
   }
 }

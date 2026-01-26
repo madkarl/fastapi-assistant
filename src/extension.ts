@@ -3,6 +3,8 @@ import { cmdCreateProject } from './commands/createProject';
 import { cmdCreateModule } from './commands/createModule';
 import { cmdCreateAPI } from './commands/createAPI';
 import { cmdCreateSchema } from './commands/createSchema';
+import { cmdCreateExternalSchemaDir } from './commands/createExternalSchemaDir';
+import { cmdAddExternalSchema } from './commands/addExternalSchema';
 
 
 export function activate(context: vscode.ExtensionContext) {
@@ -38,7 +40,23 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	context.subscriptions.push(createProject, createModule, createAPI, createSchema);
+	const createExternalSchemaDir = vscode.commands.registerCommand('fastapi-assistant.createExternalSchemaDir', async (uri: vscode.Uri) => {
+		try {
+			await cmdCreateExternalSchemaDir(context, uri);
+		} catch (error) {
+			vscode.window.showErrorMessage(`Create External Schema failed: ${error instanceof Error ? error.message : 'unknown error'}`);
+		}
+	});
+
+	const addExternalSchema = vscode.commands.registerCommand('fastapi-assistant.addExternalSchema', async (uri: vscode.Uri) => {
+		try {
+			await cmdAddExternalSchema(context, uri);
+		} catch (error) {
+			vscode.window.showErrorMessage(`Add External Schema failed: ${error instanceof Error ? error.message : 'unknown error'}`);
+		}
+	});
+
+	context.subscriptions.push(createProject, createModule, createAPI, createSchema, createExternalSchemaDir, addExternalSchema);
 }
 
 export function deactivate() { }
